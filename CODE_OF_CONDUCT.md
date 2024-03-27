@@ -4,12 +4,12 @@ Contributor Covenant Code of Conduct
 Our Pledge
 ----------
 
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age,
-body size, disability, ethnicity, gender identity and expression, level of
-experience, nationality, personal appearance, race, religion, or sexual
-identity and orientation.
+Our community is built on the principles of free speech and open
+dialogue. We believe that everyone has the right to express their
+opinions and ideas, regardless of their background, political beliefs,
+or views on any subject. We value diversity of thought, and consider
+censorship to be an abhoance, and violation of basic human rights and
+dignity.
 
 Our Standards
 -------------
@@ -25,14 +25,19 @@ include:
 
 Examples of unacceptable behavior by participants include:
 
-- The use of sexualized language or imagery and unwelcome sexual attention or
-  advances
-- Trolling, insulting/derogatory comments, and personal or political attacks
-- Public or private harassment
+- Public or private harassment, including attempting to "cancel" members.
 - Publishing others' private information, such as a physical or electronic
   address, without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+- Unprovoked harassment, and trolling.
+
+We expect all members of our community to engage in respectful and
+thoughtful discussions, even when they disagree. While we value
+freedom of speech, we also expect members to take responsibility for
+their words and actions. This means that if you make a provocative or
+inflammatory statement, you should be prepared to defend your views
+and engage in open and honest dialogue with others, even if they
+disagree with you. Using claims of victimization to shield yourself
+from criticism or avoid accountability is not acceptable.
 
 Our Responsibilities
 --------------------
@@ -43,37 +48,17 @@ response to any instances of unacceptable behavior.
 
 Project maintainers have the right and responsibility to remove, edit, or
 reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
+that are not aligned to this Code of Conduct, 
 
-Scope
------
-
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an
-appointed representative at an online or offline event. Representation of a
-project may be further defined and clarified by project maintainers.
-
-Enforcement
------------
-
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at <contact@genivia.com>. All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an
-incident. Further details of specific enforcement policies may be posted
-separately.
-
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
+In particular, we do not tolerate threats of violence, doxing,
+swatting, or any other actions that put individuals at risk of
+physical harm or emotional distress. These behaviors are not only
+unacceptable, but also violate the principles of free speech and
+expression, as they seek to intimidate or silence others through fear
+and intimidation.
 
 Attribution
 -----------
 
-This Code of Conduct is adapted from the Contributor Covenant, version 1.4,
-available at <http://contributor-covenant.org/version/1/4>.
+This Code of Conduct has been partially AI generated, and edited to
+relect the values of the team.

@@ -186,6 +186,7 @@
 (define incr (lambda (i) (+ i 1)))
 
 (define strcat (lambda (x y) (string x y)))
+(define string-append (lambda (x y) (string x y))) ;for schemetards!
 
 (define strcmp (lambda (str1 str2) (eq? str1 str2)))
 
