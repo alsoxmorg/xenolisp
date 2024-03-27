@@ -74,21 +74,21 @@ I PRIM = 0x7ff9, ATOM = 0x7ffa, STRG = 0x7ffb, CONS = 0x7ffc, CLOS = 0x7ffe, MAC
    ord(x):   returns the ordinal of the NaN-boxed double x
    num(n):   convert or check number n (does nothing, e.g. could check for NaN)
    equ(x,y): returns nonzero if x equals y */
-L box(I t, I i) {
-  L x;
+double box(I t, I i) {
+  double x;
   *(uint64_t*)&x = (uint64_t)t << 48 | i;
   return x;
 }
 
-I ord(L x) {
+I ord(double x) {
   return *(uint64_t*)&x;        /* the return value is narrowed to 32 bit unsigned integer to remove the tag */
 }
 
-L num(L n) {
+L num(double n) {
   return n;                     /* this could check for a valid number: return n == n ? n : err(5); */
 }
 
-I equ(L x, L y) {
+I equ(double x, double y) {
   return *(uint64_t*)&x == *(uint64_t*)&y;
 }
 
@@ -101,7 +101,7 @@ jmp_buf jb;
 
 /* report and throw an exception */
 #define ERR(n, ...) (fprintf(stderr, __VA_ARGS__), err(n))
-L err(int n) { longjmp(jb, n); }
+double err(int n) { longjmp(jb, n); }
 
 #define ERRORS 8
 const char *errors[ERRORS+1] = {
@@ -148,7 +148,7 @@ L cell[N];
 I fp = 0, hp = H, sp = N, tr = 0;
 
 /* Lisp constant expressions () (nil) and #t, and the global environment env */
-L nil, tru, env;
+double nil, tru, env;
 
 /* bit vector corresponding to the pairs of cells in the pool marked 'used' (car and cdr cells are marked together) */
 uint32_t used[(P+63)/64];
@@ -229,7 +229,7 @@ I gc() {
 }
 
 /* push x on the stack to protect it from being recycled, returns pointer to cell pair (e.g. to update the value) */
-L *push(L x) {
+double *push(double x) {
   cell[--sp] = x;                               /* we must save x on the stack so it won't get GC'ed */
   if (hp > (sp-1) << 3 || ALWAYS_GC) {          /* if insufficient stack space is available, then GC */
     gc();                                       /* GC */
@@ -240,7 +240,7 @@ L *push(L x) {
 }
 
 /* pop from the stack and return value */
-L pop() {
+double pop() {
   return cell[sp++];
 }
 
@@ -273,7 +273,7 @@ I copy(const char *s) {
 }
 
 /* interning of atom names (symbols), returns a unique NaN-boxed ATOM */
-L atom(const char *s) {
+double atom(const char *s) {
   I i = H+R;
   while (i < hp && strcmp(A+i, s))              /* search the heap for matching atom (or string) s */
     i += strlen(A+i)+R+1;
@@ -283,13 +283,13 @@ L atom(const char *s) {
 }
 
 /* store string s on the heap, returns a NaN-boxed STRG with heap offset */
-L string(const char *s) {
+double string(const char *s) {
   return box(STRG, copy(s));                    /* copy string+\0 to the heap, return NaN-boxed STRG */
 }
 
 /* construct pair (x . y) returns a NaN-boxed CONS */
-L cons(L x, L y) {
-  L p; I i = fp;                                /* i'th cons cell pair car cell[i] and cdr cell[i+1] is free */
+double cons(double x, double y) {
+  double p; I i = fp;                           /* i'th cons cell pair car cell[i] and cdr cell[i+1] is free */
   fp = ord(cell[i]);                            /* update free pointer to next free cell pair, zero if none are free */
   cell[i] = x;                                  /* save x into car cell[i] */
   cell[i+1] = y;                                /* save y into cdr cell[i+1] */
@@ -303,46 +303,46 @@ L cons(L x, L y) {
 }
 
 /* construct a pair to add to environment e, returns the list ((v . x) . e) */
-L pair(L v, L x, L e) {
+double pair(double v, double x, double e) {
   return cons(cons(v, x), e);
 }
 
 /* construct a closure, returns a NaN-boxed CLOS */
-L closure(L v, L x, L e) {
+double closure(double v, double x, double e) {
   return box(CLOS, ord(pair(v, x, equ(e, env) ? nil : e)));
 }
 
 /* construct a macro, returns a NaN-boxed MACR */
-L macro(L v, L x) {
+double macro(double v, double x) {
   return box(MACR, ord(cons(v, x)));
 }
 
 /* return the car of a cons/closure/macro pair; CAR(p) provides direct memory access */
 #define CAR(p) cell[ord(p)]
-L car(L p) {
+double car(double p) {
   return (T(p) & ~(CONS^MACR)) == CONS ? CAR(p) : err(1);
 }
 
 /* return the cdr of a cons/closure/macro pair; CDR(p) provides direct memory access */
 #define CDR(p) cell[ord(p)+1]
-L cdr(L p) {
+double cdr(double p) {
   return (T(p) & ~(CONS^MACR)) == CONS ? CDR(p) : err(1);
 }
 
 /* look up a symbol in an environment, returns its value */
-L assoc(L v, L e) {
+double assoc(double v, double e) {
   while (T(e) == CONS && !equ(v, car(car(e))))
     e = cdr(e);
   return T(e) == CONS ? cdr(car(e)) : T(v) == ATOM ? ERR(3, "unbound %s ", A+ord(v)) : err(3);
 }
 
 /* not(x) is nonzero if x is the Lisp () empty list */
-I not(L x) {
+I not(double x) {
   return T(x) == NIL;
 }
 
 /* more(t) is nonzero if list t has more than one item, i.e. is not empty or a singleton list */
-I more(L t) {
+I more(double t) {
   return T(t) != NIL && (t = cdr(t), T(t) != NIL);
 }
 
@@ -441,15 +441,15 @@ char scan() {
 }
 
 /* return the Lisp expression parsed and read from input */
-L parse();
-L readlisp() {
+double parse();
+double readlisp() {
   scan();
   return parse();
 }
 
 /* return a parsed Lisp list */
-L list() {
-  L *p = push(nil);                             /* push the new list to protect it from getting GC'ed */
+double list() {
+  double *p = push(nil);                             /* push the new list to protect it from getting GC'ed */
   while (1) {
     if (scan() == ')')
       return pop();
@@ -465,8 +465,8 @@ L list() {
 }
 
 /* return a parsed Lisp expression */
-L parse() {
-  L x; I i;
+double parse() {
+  double x; I i;
   if (*buf == '(')                              /* if token is ( then parse a list */
     return list();
   if (*buf == '\'') {                           /* if token is ' then parse an expression x to return (quote x) */
@@ -490,9 +490,9 @@ L parse() {
 FILE *out;
 
 /* construct a new list of evaluated expressions in list t, i.e. the arguments passed to a function or primitive */
-L eval(L, L);
-L evlis(L t, L e) {
-  L *p = push(nil);                             /* push the new list to protect it from getting GC'ed */
+double eval(double, double);
+double evlis(double t, double e) {
+  double *p = push(nil);                             /* push the new list to protect it from getting GC'ed */
   for (; T(t) == CONS; t = cdr(t)) {            /* for each expression in list t */
     *p = cons(eval(car(t), e), nil);            /* evaluate it and add it to the end of the list replacing last nil */
     p = &CDR(*p);                               /* p points to the cdr nil to replace it with the rest of the list */
@@ -502,12 +502,12 @@ L evlis(L t, L e) {
   return pop();                                 /* pop new list and return it */
 }
 
-L f_type(L t, L *_) {
-  L x = car(t);
+double f_type(double t, double *_) {
+  double x = car(t);
   return T(x) == NIL ? -1.0 : T(x) >= PRIM && T(x) <= MACR ? T(x) - PRIM + 1 : 0.0;
 }
 
-L f_ident(L t, L *_) {
+double f_ident(double t, double *_) {
   return car(t);
 }
 
@@ -712,6 +712,22 @@ L f_write(L t, L *_) {
   return nil;
 }
 
+double f_system(double t, double *_) {
+  L x;
+  char clibuff[255];
+  for (; T(t) != NIL; t = cdr(t)) {
+    x = car(t);
+    if (T(x) == STRG)
+      sprintf(clibuff, "%s", A+ord(x));
+    else
+      /*print(x);*/
+      system(clibuff);
+  }
+  printf("the clibuff: %s\n", clibuff);
+  system(clibuff);
+  return nil;
+}
+
 L f_string(L t, L *_) {
   I i, j; L s;
   for (i = 0, s = t; T(s) != NIL; s = cdr(s)) {
@@ -827,7 +843,7 @@ struct {
   /*C sanity!*/
   {"puts",     f_write,     NORMAL},
   {"exit",     f_quit,      NORMAL},              /* (exit) same as quit :) */
-  {"system*",  f_string,   NORMAL},             /*make a new func that runs system commands*/
+  {"system*",  f_system,   NORMAL},             /*make a new func that runs system commands*/
   {0}
 };
 

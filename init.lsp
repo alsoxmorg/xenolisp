@@ -188,3 +188,6 @@
 (define strcat (lambda (x y) (string x y)))
 
 (define strcmp (lambda (str1 str2) (eq? str1 str2)))
+
+(define gets (lambda (s) (define str s) (str)))
+
