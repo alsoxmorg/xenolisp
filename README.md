@@ -1,4 +1,7 @@
 # xenolisp
+
+I am no longer working on this.  Check out swampscheme.
+
 Learning lisp with a manual fork of lisp in 1k lines of code.  This repository is an attempt to learn and teach lisp by "hacking", building, modifying, and studying a previous minimalist lisp.  Yes, its another dialect of lisp! 
 
 The original code as taken from:
